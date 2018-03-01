@@ -10,7 +10,7 @@ dockerhub link
 
 ## Applications and Demos
 | Application | Demo Link| 
-| ------------- | --------  | ----------- |
+| ------------- | --------  |
 | Viusal People Comprehension | http://abc.com:3000/ | 
 
 
