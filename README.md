@@ -1,25 +1,23 @@
 # MAX-Example
 
 ## Description
-Keras is a deep learning library that you can use in conjunction with Tensorflow and several other deep learning libraries. This is Keras model Xception V1 , with weights pre-trained on ImageNet.It takes an image and .....
+Keras is a deep learning library that you can use in conjunction with Tensorflow and several other deep learning libraries. This is Keras model Inception V3, with weights pre-trained on ImageNet. Since its first introduction, Inception has been one of the best performing family of models on the ImageNet dataset 
 
 ## Published Docker Image:
 ```
 dockerhub link
 ```
 
-## Demo Link
-| Application | Demo Link| 
-| ------------- | --------  |
-| Viusal People Comprehension | http://abc.com:3000/ | 
+## Try Out
+| Demo Link| 
+| ------------- |
+| http://abc.com:3000/ | 
 
 
-## Models
-| Domain | Industry | Framework | Type | Datasets | Supported Methods* | links | 
-| ------------- | --------  | -------- | --------- | --------- | -------------- | --------------- |
-| Vision | General | Faster RCNN and PyCaffe | GoogLeNet | Pascal VOC | Inference/Test | external link |
-
-Supported methods can be Train, Interence/Test, Update/Transfer, Embeddings, etc
+## Model 
+| Domain | Industry | Framework | Datasets | Data Format | Links | 
+| ------------- | --------  | -------- | --------- | --------- | -------------- | 
+| Vision | General | Tensorflow and Theano| ImageNet | channels_first, channels_last| https://arxiv.org/abs/1512.00567 |
 
 ## Build and Run
 
@@ -35,206 +33,37 @@ Supported methods can be Train, Interence/Test, Update/Transfer, Embeddings, etc
 
 ## Steps
 
-### Build the Docker Image:
-```
-build
-```
-### Run the Docker Container:
-```
-up
-```
-### Shutdown the Docker Container:
-```
-down
-```
+## Deploy the Model 
 
-## API Method : Inference
+To build and deploy the model to a REST API using Docker, follow these steps:
 
-### Command
-```
-curl -F "images=@<your-images>" -XPOST http://<your-server>:55555/recognize?api_key=<a_key>
-```
-Analyze posted image(s) `<your-images>` and yield results in JSON output. `<your-images>` can be a single image file or a zip file of several image files. `<your-images>` are processed by `/detect_people` API first to producing a set of regions conatining a bounding box and object type (face, head-shoulder, pedestrian, torso and legs) for each region.
+### 1. Clone the repo
 
-For development, you can specify any text for `<a_key>`.
-i.e.
-```
-curl -F "images=@1.jpg" -XPOST http://smithgpu06.pok.ibm.com:55555/recognize?api_key=zzz
-```
-
-
-The Frontend API wraps results from Internal APIs as below:
+Clone the `mae-skeleton-keras` repository locally. In a terminal, run the following command:
 
 ```
-{
-    "images": [
-        {
-            "results": {
-            ...
-            ...
-            ...
-                        },
-            "Image": "1.jpg"
-        }
-    ],
-    "images_processed": 1
-}
+$ git clone https://https://github.com/IBM/MAX.git
 ```
 
-### Input
-| Type | Content | 
-| ------------- | --------  |
-| Modality | Image(s) |
-| JSON Metadata | Optional |
+Change directory into the repository base folder: `$ cd MAX`.
 
-### Output
-The above command produces sample JSON results as below:
+### 2. Build the Model Docker image
+
+To build the docker image locally, run: 
 
 ```
-            {     
-                 "Objects": {
-                    "Timing": {
-                        "$": 0.209268808365
-                    },
-                    "Object": [
-                        {
-                            "Type": {
-                                "$": "pedestrian"
-                            },
-                            "Location": {
-                                "Score": {
-                                    "$": 0.843919992447
-                                },
-                                "Left": {
-                                    "$": 0
-                                },
-                                "Top": {
-                                    "$": 0
-                                },
-                                "Right": {
-                                    "$": 525
-                                },
-                                "Bottom": {
-                                    "$": 791
-                                }
-                            }
-                        },
-                        {
-                            "Type": {
-                                "$": "face"
-                            },
-                            "Location": {
-                                "Score": {
-                                    "$": 0.999044835567
-                                },
-                                "Left": {
-                                    "$": 129
-                                },
-                                "Top": {
-                                    "$": 147
-                                },
-                                "Right": {
-                                    "$": 392
-                                },
-                                "Bottom": {
-                                    "$": 456
-                                }
-                            }
-                        },
-                        {
-                            "Type": {
-                                "$": "head-shoulder"
-                            },
-                            "Location": {
-                                "Score": {
-                                    "$": 0.978021621704
-                                },
-                                "Left": {
-                                    "$": 27
-                                },
-                                "Top": {
-                                    "$": 0
-                                },
-                                "Right": {
-                                    "$": 525
-                                },
-                                "Bottom": {
-                                    "$": 613
-                                }
-                            }
-                        },
-                        {
-                            "Type": {
-                                "$": "torso"
-                            },
-                            "Location": {
-                                "Score": {
-                                    "$": 0.979073643684
-                                },
-                                "Left": {
-                                    "$": 48
-                                },
-                                "Top": {
-                                    "$": 387
-                                },
-                                "Right": {
-                                    "$": 515
-                                },
-                                "Bottom": {
-                                    "$": 791
-                                }
-                            }
-                        }
-                    ]
-                }
-            }
+$ docker build -t mae-keras -f Dockerfile .
 ```
 
-Each region is defined within a block of JSON as below where `Type` can be `face`, `pedestrian`, `head-shoulder` and `torso` and `Location` is defined by `Left`, `Top`, `Right`, and `Bottom`. The `Score` within `Location` block is the confidence value for the object type and its location. Please note that we are using Coordinate System where the origin is at `Top` and `Left` and `x` is increasing from `Left` to `Right` and `y` is increasing from `Top` to `Bottom`.
+The docker image uses the [nvidia/cuda base image](https://hub.docker.com/r/nvidia/cuda/) so will need to pull that from Dockerhub, which may take some time. _Note_ that currently this docker image is CPU only (we will support GPU later).
+
+### 3. Run the Model server
+
+To run the docker image, which automatically starts the model serving API, run:
+
 ```
-                        {
-                            "Type": {
-                                "$": "face"
-                            },
-                            "Location": {
-                                "Score": {
-                                    "$": 0.999044835567
-                                },
-                                "Left": {
-                                    "$": 129
-                                },
-                                "Top": {
-                                    "$": 147
-                                },
-                                "Right": {
-                                    "$": 392
-                                },
-                                "Bottom": {
-                                    "$": 456
-                                }
-                            }
-                        }
+$ docker run -it -v $PWD:$PWD -w $PWD -v $HOME/.keras/models:/root/.keras/models -p 5000:5000 mae-keras
 ```
 
-
-## Publish and Share
-You can push your model to IBM Docker Registry for sharing and deployment:
-
-Step 1: Make sure you have login to the registry:
+When run for the first time, the model files will automatically be downloaded.
 ```
-docker login --username <your-ibm-email> https://wvfs-docker-local.artifactory.swg-devops.com
-```
-Step 2: Publish and Share your Model:
-```
-docker push wvfs-docker-local.artifactory.swg-devops.com/ai-model-vision-example
-```
-
-If needed, you can tag your image with a version and then pubilsh it:
-```
-docker tag wvfs-docker-local.artifactory.swg-devops.com/ai-model-vision-example wvfs-docker-local.artifactory.swg-devops.com/ai-model-vision-example:v0.1
-docker push wvfs-docker-local.artifactory.swg-devops.com/ai-model-vision-example:v0.1
-```
-where we label the default latest version `latest` to `v0.1` and then push it to IBM Docker Registry for Sharing and Deployment.
-
-## References
-1. https://github.ibm.com/qfan/Sparse-Complementary-Detector
