@@ -4,10 +4,10 @@
 Keras is a deep learning library that you can use in conjunction with Tensorflow and several other deep learning libraries. This is Keras model Inception V3, with weights pre-trained on ImageNet. Since its first introduction, Inception has been one of the best performing family of models on the ImageNet dataset 
 
 ## Try Out
-| Demo Link| 
-| ------------- |
-| http://abc.com:3000/ | 
 
+```
+Demo link 
+```
 
 ## Model Metadata
 | Domain | Industry | Framework | Datasets | Data Format | Links | 
@@ -34,7 +34,6 @@ Keras is a deep learning library that you can use in conjunction with Tensorflow
 6. [Clean Up](#6-clean-up)
 7. [Troubleshooting](#7-troubleshooting)
 8. [References](#8-references)
-
 
 ## 1. Quick Start
 
@@ -107,3 +106,8 @@ app.run(debug=True, host='0.0.0.0')
 
 You will then need to rebuild the docker image (following [step 2](#2-build-the-model-docker-image) and [step 3](#3-run-the-model-server)).
 
+## 6. Cleanup
+
+## 7. Troubleshooting
+
+## 8. Refernces
