@@ -1,14 +1,14 @@
 # MAX-Example
 
 ## Description
-The model takes an image and detects and localizes people and their parts: face, head-shoulder, body, torso, and legs within the image.
+Keras is a deep learning library that you can use in conjunction with Tensorflow and several other deep learning libraries. This is Keras model Xception V1 , with weights pre-trained on ImageNet.It takes an image and .....
 
 ## Published Docker Image:
 ```
 dockerhub link
 ```
 
-## Applications and Demos
+## Demo Link
 | Application | Demo Link| 
 | ------------- | --------  |
 | Viusal People Comprehension | http://abc.com:3000/ | 
