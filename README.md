@@ -110,4 +110,4 @@ You will then need to rebuild the docker image (following [step 2](#2-build-the-
 
 ## 7. Troubleshooting
 
-## 8. Refernces
+## 8. References
