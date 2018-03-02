@@ -78,7 +78,7 @@ Minikube instructions go here
 
 IBM Cloud instructions go here
 
-## 4 Use the Model
+## 4. Use the Model
 
 The API server automatically generates an interactive Swagger documentation page. Go to `http://localhost:5000` to load it. From there you can explore the API and also create test requests.
 
